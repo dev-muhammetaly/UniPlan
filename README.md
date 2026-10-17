@@ -1,55 +1,30 @@
-# 📅 Timetable Maker
+# UniPlan
 
-A modern, cross-platform Flutter application designed to simplify schedule management. **Timetable Maker** allows users to scan physical schedules using AI and manage their daily routines with ease.
+UniPlan turns a timetable image into calendar entries. Pick an image or take a photo, send it for extraction, and view the resulting schedule.
 
-## ✨ Features
+It is built with Flutter, OpenRouter and local Hive storage.
 
-- **📸 AI Schedule Scanner**: Extract timetable entries directly from images using advanced AI (GPT-4o via OpenRouter).
-- **🗓️ Interactive Calendar**: View your schedule in a beautiful, organized calendar interface powered by Syncfusion.
-- **🛠️ Manual Management**: Add, edit, or delete events manually with precise control over time, duration, and location.
-- **💾 Local Storage**: Your data is saved securely on your device using Hive for fast, offline access.
-- **📱 Cross-Platform**: Built with Flutter to run on Android, iOS, Web, Windows, macOS, and Linux.
+## How it works
 
-## 🚀 Getting Started
+The scanner sends the image to OpenRouter using `openai/gpt-4o-mini`. The response becomes schedule events saved locally. Although the service file is named `claude_service.dart`, the configured model is GPT-4o mini.
 
-### Prerequisites
+The app also supports adding and editing events manually.
 
-- [Flutter SDK](https://docs.flutter.dev/get-started/install) (Stable channel)
-- [Dart SDK](https://dart.dev/get-started/sdk)
-- An [OpenRouter API Key](https://openrouter.ai/) (for the AI scanning feature)
+## Run locally
 
-### Installation
+Install Flutter and get your own OpenRouter API key. Replace the placeholder in `lib/services/claude_service.dart` for local development, then run:
 
-2. **Clone the repository:**
-   ```bash
-   git clone https://github.com/dev-muhammetaly/UniPlan.git
-   cd UniPlan
-   ```
+```sh
+flutter pub get
+flutter run
+```
 
-2. **Install dependencies:**
-   ```bash
-   flutter pub get
-   ```
+Extraction requires internet access and may incur OpenRouter charges. Keep your key out of commits. A distributed version should route requests through a backend rather than bundle a private key.
 
-3. **Set up your API Key:**
-   Open `lib/services/claude_service.dart` and replace `YOUR_API_KEY_HERE` with your actual OpenRouter API key.
+On Windows, use the gallery option; camera capture is not supported by the scanner there.
 
-4. **Run the application:**
-   ```bash
-   flutter run
-   ```
+## Current limitations
 
-## 🛠️ Built With
+Extraction can misread a timetable. Results are saved immediately, so check the calendar after scanning. Scanning the same timetable again can create duplicates.
 
-- **Framework**: [Flutter](https://flutter.dev/)
-- **State Management**: Provider-like patterns with Hive
-- **Database**: [Hive](https://docs.hivedb.dev/) (NoSQL)
-- **UI Components**: [Syncfusion Flutter Calendar](https://www.syncfusion.com/flutter-widgets/flutter-calendar)
-- **AI Integration**: [OpenRouter API](https://openrouter.ai/) (OpenAI GPT-4o-mini)
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-Built with ❤️ by [dev-muhammetaly](https://github.com/dev-muhammetaly)
+Schedule records stay in local Hive storage. There is no account-based sync between devices.
